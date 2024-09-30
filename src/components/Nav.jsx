@@ -76,16 +76,17 @@ const Nav = () => {
                                 'md:flex md:static md:flex-row md:gap-5 md:items-center md:bg-transparent' // Flex row and visible for medium and larger screens
                             )}
                         >
-                            <div className="bg-slate-300 w-full flex flex-col gap-5 items-center justify-center md:flex-row md:bg-transparent">
+                            <div className="bg-slate-300 w-full flex flex-col gap-5 items-center justify-center md:flex-row md:bg-transparent py-2">
                                 {navData.map((data, index) => (
                                     <div className='!block' key={index}>
                                         <ListItem
                                             href={data.path}
                                             item={data.item}
                                             className={cn(
+                                                'hover:bg-black rounded-md transition-all duration-100 hover:text-white',
                                                 "capitalize text-center font-medium text-base py-1 px-2",
                                                 'md:text-lg',
-                                                location.pathname === data.path ? 'text-gray-500 underline' : 'text-black' // White text for active page
+                                                location.pathname === data.path ? 'text-white bg-black  ' : 'text-black' // White text for active page
                                             )}
                                         />
                                     </div>
