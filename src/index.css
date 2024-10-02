@@ -5,3 +5,12 @@
 body{
   background: #F7EFED;
 }
+
+.slick-slide > div{
+  margin: 0 10px;
+}
+
+.slick-arrow {
+  background: #000;
+  border-radius: 100%;
+}
