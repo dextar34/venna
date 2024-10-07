@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 
+
 const Home = () => {
   // Initialize an empty array for selected data
   const [selectedData, setSelectedData] = useState([]);
@@ -94,7 +95,7 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <div className="mt-24 md:mt-32">
       <Container className={"my-2"}>
         <div className="content">
           <div className="main flex flex-col md:flex-row justify-between gap-x-10 mx-2">
@@ -174,7 +175,7 @@ const Home = () => {
                 </div>
 
                 {/* Size Selection */}
-                <div className="size addToCart py-3 flex flex-col justify-between gap-x-2 md:block">
+                {/* <div className="size addToCart py-3 flex flex-col justify-between gap-x-2 md:block">
                   <div className="size&help pt-3">
                     <div className="size">
                       <h2 className="font-semibold text-lg md:text-xl">Size</h2>
@@ -195,7 +196,7 @@ const Home = () => {
                       </ul>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div className="size addToCart py-3 flex flex-col justify-between gap-x-2 md:block">
                   <div className="size&help pt-3">
                     <div className="size">
@@ -264,7 +265,7 @@ const Home = () => {
 
       {/* Carousel */}
       <div className="suggested-items pt-10 pb-20">
-        <Container>
+        <Container className={'mx-7 md:mx-auto'}>
           <h1 className="font-semibold text-3xl pb-5">You may also like</h1>
           <Slider {...settings}>
             {data.map((item, i) => (

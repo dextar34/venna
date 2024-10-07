@@ -51,7 +51,7 @@ const Nav = () => {
     }, [menuOpen]);
 
     return (
-        <nav className="main pb-1">
+        <nav className="main bg-[#F7EFED]  pb-1 fixed top-0 w-full z-50">
             <Container>
                 <div className="navMain py-2 px-2 flex justify-between items-center relative  border-b border-black p-10">
                     {/* Logo Section */}
