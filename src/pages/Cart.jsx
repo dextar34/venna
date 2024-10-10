@@ -6,14 +6,17 @@ import cn from "../lib/cn";
 const Cart = () => {
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
   const [subTotal] = useState(400); // Assuming subTotal is constant for now
   const [deliveryCharge, setDeliveryCharge] = useState(0);
   const [total, setTotal] = useState(subTotal);
-  
+
   const [divisions, setDivisions] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [selectedDivision, setSelectedDivision] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const value = e.target.value.replace(/\D/g, ""); // Strip non-numeric characters
@@ -24,52 +27,47 @@ const Cart = () => {
     const divisionId = e.target.value;
     setSelectedDivision(divisionId);
     setSelectedDistrict(""); // Reset district when division changes
-    setDeliveryCharge(0); // Reset delivery charge when division changes
-
-    if (divisionId) {
-      // Only set delivery charge when division is selected
-      const division = divisions.find(div => div._id === divisionId);
-      if (division === "Dhaka" && division.division === "Dhaka") {
-        setDeliveryCharge(70);
-      } else {
-        setDeliveryCharge(140);
-      }
-    }
+    setDeliveryCharge(0); // Default to 0 initially
   };
 
   const handleDistrictChange = (e) => {
-    const districtId = e.target.value;
-    setSelectedDistrict(districtId);
+    const selectedOption = e.target.options[e.target.selectedIndex]; // Get the selected option element
+    const districtId = e.target.value; // Get the selected district ID from the dropdown
+    setSelectedDistrict(districtId); // Update the state with the selected district
+  
+    // Check if the selected option's text is "Dhaka"
+    if (selectedOption.text === "Dhaka") {
+      setDeliveryCharge(70); // Set delivery charge to 70 for Dhaka district
+    } else {
+      setDeliveryCharge(140); // Set delivery charge to 140 for other districts
+    }
+  };
+  
 
-    // Update delivery charge based on selected division and district
-    if (selectedDivision && districtId) {
-      const district = districts.find(district => district._id === districtId);
-      if (district) {
-        if (district.district == "Dhaka") {
-          setDeliveryCharge(70);
-        } else {
-          setDeliveryCharge(140);
-        }
-      }
+  const handleSubmit = () => {
+    if (!name || !phone || !address || !selectedDivision || !selectedDistrict) {
+      setErrorMessage("Please fill out all the required fields.");
+    } else {
+      setErrorMessage(""); // Clear the error message if everything is valid
+      // Proceed with the order confirmation process here
     }
   };
 
-  // Update total whenever deliveryCharge changes
   useEffect(() => {
     setTotal(subTotal + deliveryCharge);
-  }, [deliveryCharge]);
+  }, [deliveryCharge, subTotal]);
 
-  // Fetch divisions from bdapis.com
   useEffect(() => {
-    axios.get("https://bdapis.com/api/v1.2/divisions")
+    axios
+      .get("https://bdapis.com/api/v1.2/divisions")
       .then((response) => setDivisions(response.data.data))
       .catch((error) => console.error("Error fetching divisions:", error));
   }, []);
 
-  // Fetch districts based on selected division
   useEffect(() => {
     if (selectedDivision) {
-      axios.get(`https://bdapis.com/api/v1.2/division/${selectedDivision}`)
+      axios
+        .get(`https://bdapis.com/api/v1.2/division/${selectedDivision}`)
         .then((response) => setDistricts(response.data.data))
         .catch((error) => console.error("Error fetching districts:", error));
     } else {
@@ -95,8 +93,10 @@ const Cart = () => {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder=" Name*" // Placeholder for user input
+                  placeholder=" Name*"
                 />
+                {errorMessage && !name && <p className="text-red-500">Name is required</p>}
+
                 <div className={cn("flex items-center py-3 bg-white")}>
                   <span className="ml-2">+88</span>
                   <input
@@ -104,9 +104,10 @@ const Cart = () => {
                     type="text"
                     value={phone}
                     onChange={handleChange}
-                    placeholder="  Enter your number*" // Placeholder for user input
+                    placeholder="  Enter your number*"
                   />
                 </div>
+                {errorMessage && phone.length !== 11 && <p className="text-red-500">Valid phone number is required</p>}
                 <input
                   className={cn("focus:outline-none w-full py-3 my-2")}
                   type="email"
@@ -122,41 +123,40 @@ const Cart = () => {
                   type="text"
                   placeholder="House no, street, direction*"
                 />
+                {errorMessage && !address && <p className="text-red-500">Address is required</p>}
 
                 {/* Division Dropdown */}
                 <div className="my-2">
                   <label>Division: </label>
-                  <select
-                    value={selectedDivision}
-                    onChange={handleDivisionChange}
-                  >
+                  <select value={selectedDivision} onChange={handleDivisionChange}>
                     <option value="">Select Division</option>
-                    {divisions.length > 0 && divisions.map((division) => (
-                      <option key={division._id} value={division._id}>
-                        {division.division}
-                      </option>
-                    ))}
+                    {divisions.length > 0 &&
+                      divisions.map((division) => (
+                        <option key={division._id} value={division._id}>
+                          {division.division}
+                        </option>
+                      ))}
                   </select>
                 </div>
+                {errorMessage && !selectedDivision && <p className="text-red-500">Division is required</p>}
 
                 {/* District Dropdown */}
-                <div className="my-2">
+                <div className="my-2" id="district">
                   <label>District: </label>
-                  <select
-                    value={selectedDistrict}
-                    onChange={handleDistrictChange}
-                    disabled={!selectedDivision}
-                  >
+                  <select value={selectedDistrict} onChange={handleDistrictChange} disabled={!selectedDivision}>
                     <option value="">Select District</option>
-                    {districts.length > 0 && districts.map((district) => (
-                      <option key={district._id} value={district._id}>
-                        {district.district}
-                      </option>
-                    ))}
+                    {districts.length > 0 &&
+                      districts.map((district) => (
+                        <option key={district._id} value={district._id}>
+                          {district.district}
+                        </option>
+                      ))}
                   </select>
                 </div>
+                {errorMessage && !selectedDistrict && <p className="text-red-500">District is required</p>}
               </div>
             </div>
+
             <div className="deliveryInfo w-80 border border-gray-900 p-2 my-5">
               <div className="flex justify-between py-1">
                 <h4>Sub Total</h4>
@@ -171,10 +171,9 @@ const Cart = () => {
                 <h3>{total}৳</h3>
               </div>
             </div>
+
             <div className="confirmOrder w-80 bg-black text-white text-center py-3 rounded-xl my-3">
-              <button disabled={!name || phone.length !== 11 || !selectedDivision || !selectedDistrict}>
-                Confirm Order
-              </button>
+              <button onClick={handleSubmit}>Confirm Order</button>
             </div>
           </div>
           <div className={cn("productList")}></div>
