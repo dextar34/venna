@@ -100,12 +100,12 @@ const Home = () => {
         <div className="content">
           <div className="main flex flex-col md:flex-row justify-between gap-x-10 mx-2">
             <div className="picTo md:w-1/2 ">
-              <div className="mainPic w-[325px] h-[400px] md:w-[400px] md:h-[500px] border-black border">
+              <div className="mainPic w-[325px] h-[400px] md:w-[400px] md:h-[500px] overflow-hidden ">
                 {/* Main image dynamically set */}
                 <img
                   src={mainPic} // Display the main image dynamically
                   alt=""
-                  className="w-full h-full object-contain py-2 flex items-center justify-center"
+                  className="w-full h-full object-cover py-2 flex items-center justify-center rounded-2xl"
                 />
               </div>
 
@@ -113,19 +113,19 @@ const Home = () => {
               <div className="thumbnail w-[325px] md:w-[400px] flex justify-between">
                 {/* Thumbnail 1 */}
                 <div
-                  className="subPic w-16 h-16 border border-black my-5"
+                  className="subPic w-16 h-16 my-5"
                   onClick={() => setMainPic(activeData.pic1)} // Update main image on click
                 >
                   <img
                     src={activeData.pic1}
                     alt=""
-                    className="w-full h-full object-contain py-2 flex items-center justify-center"
+                    className="w-full h-full object-cover py-2 flex items-center justify-center"
                   />
                 </div>
 
                 {/* Thumbnail 2 */}
                 <div
-                  className="subPic w-16 h-16 border border-black my-5"
+                  className="subPic w-16 h-16  my-5"
                   onClick={() => setMainPic(activeData.pic2)} // Update main image on click
                 >
                   <img
@@ -137,7 +137,7 @@ const Home = () => {
 
                 {/* Thumbnail 3 */}
                 <div
-                  className="subPic w-16 h-16 border border-black my-5"
+                  className="subPic w-16 h-16  my-5"
                   onClick={() => setMainPic(activeData.pic3)} // Update main image on click
                 >
                   <img
@@ -149,7 +149,7 @@ const Home = () => {
 
                 {/* Thumbnail 4 */}
                 <div
-                  className="subPic w-16 h-16 border border-black my-5"
+                  className="subPic w-16 h-16  my-5"
                   onClick={() => setMainPic(activeData.pic4)} // Update main image on click
                 >
                   <img

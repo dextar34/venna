@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Container from "../components/layer/Container";
 import cn from "../lib/cn";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { FaPlus } from "react-icons/fa";
+import { Link } from "react-router-dom";
+
 
 const Cart = () => {
   const [phone, setPhone] = useState("");
@@ -34,7 +38,7 @@ const Cart = () => {
     const selectedOption = e.target.options[e.target.selectedIndex]; // Get the selected option element
     const districtId = e.target.value; // Get the selected district ID from the dropdown
     setSelectedDistrict(districtId); // Update the state with the selected district
-  
+
     // Check if the selected option's text is "Dhaka"
     if (selectedOption.text === "Dhaka") {
       setDeliveryCharge(70); // Set delivery charge to 70 for Dhaka district
@@ -42,7 +46,6 @@ const Cart = () => {
       setDeliveryCharge(140); // Set delivery charge to 140 for other districts
     }
   };
-  
 
   const handleSubmit = () => {
     if (!name || !phone || !address || !selectedDivision || !selectedDistrict) {
@@ -78,14 +81,32 @@ const Cart = () => {
   return (
     <div className="mt-28 mx-4">
       <Container>
-        <div className="main">
-          <div className={cn("form")}>
-            <h1 className={cn("font-bold text-2xl text-gray-600 mb-10", "md:text-4xl")}>
-              Place order
-            </h1>
+        <div className="tittle">
+          <h1
+            className={cn(
+              "font-bold text-2xl text-gray-600 mb-10",
+              "md:text-4xl"
+            )}
+          >
+            Place order
+          </h1>
+        </div>
+        <div
+          className={cn(
+            "main",
+            "flex flex-col-reverse gap-x-32 gap-y-5",
+            "md:flex-row  items-center"
+          )}
+        >
+          <div className={cn("form", "md:w-[2600px]")}>
             <div className={cn("details")}>
               <div className="yourDetails">
-                <h1 className={cn("text-xl font-semibold text-gray-500 pb-2", "md:text-2xl md:pt-10")}>
+                <h1
+                  className={cn(
+                    "text-xl font-semibold text-gray-500 pb-2",
+                    "md:text-2xl md:pt-10"
+                  )}
+                >
                   Your details
                 </h1>
                 <input
@@ -95,7 +116,9 @@ const Cart = () => {
                   onChange={(e) => setName(e.target.value)}
                   placeholder=" Name*"
                 />
-                {errorMessage && !name && <p className="text-red-500">Name is required</p>}
+                {errorMessage && !name && (
+                  <p className="text-red-500">Name is required</p>
+                )}
 
                 <div className={cn("flex items-center py-3 bg-white")}>
                   <span className="ml-2">+88</span>
@@ -107,7 +130,9 @@ const Cart = () => {
                     placeholder="  Enter your number*"
                   />
                 </div>
-                {errorMessage && phone.length !== 11 && <p className="text-red-500">Valid phone number is required</p>}
+                {errorMessage && phone.length !== 11 && (
+                  <p className="text-red-500">Valid phone number is required</p>
+                )}
                 <input
                   className={cn("focus:outline-none w-full py-3 my-2")}
                   type="email"
@@ -115,7 +140,12 @@ const Cart = () => {
                 />
               </div>
               <div className="yourAddress">
-                <h1 className={cn("text-xl font-semibold text-gray-500 p-2", "md:text-2xl md:pt-10")}>
+                <h1
+                  className={cn(
+                    "text-xl font-semibold text-gray-500 p-2",
+                    "md:text-2xl md:pt-10"
+                  )}
+                >
                   Your address
                 </h1>
                 <input
@@ -123,12 +153,17 @@ const Cart = () => {
                   type="text"
                   placeholder="House no, street, direction*"
                 />
-                {errorMessage && !address && <p className="text-red-500">Address is required</p>}
+                {errorMessage && !address && (
+                  <p className="text-red-500">Address is required</p>
+                )}
 
                 {/* Division Dropdown */}
                 <div className="my-2">
                   <label>Division: </label>
-                  <select value={selectedDivision} onChange={handleDivisionChange}>
+                  <select
+                    value={selectedDivision}
+                    onChange={handleDivisionChange}
+                  >
                     <option value="">Select Division</option>
                     {divisions.length > 0 &&
                       divisions.map((division) => (
@@ -138,12 +173,18 @@ const Cart = () => {
                       ))}
                   </select>
                 </div>
-                {errorMessage && !selectedDivision && <p className="text-red-500">Division is required</p>}
+                {errorMessage && !selectedDivision && (
+                  <p className="text-red-500">Division is required</p>
+                )}
 
                 {/* District Dropdown */}
                 <div className="my-2" id="district">
                   <label>District: </label>
-                  <select value={selectedDistrict} onChange={handleDistrictChange} disabled={!selectedDivision}>
+                  <select
+                    value={selectedDistrict}
+                    onChange={handleDistrictChange}
+                    disabled={!selectedDivision}
+                  >
                     <option value="">Select District</option>
                     {districts.length > 0 &&
                       districts.map((district) => (
@@ -153,7 +194,9 @@ const Cart = () => {
                       ))}
                   </select>
                 </div>
-                {errorMessage && !selectedDistrict && <p className="text-red-500">District is required</p>}
+                {errorMessage && !selectedDistrict && (
+                  <p className="text-red-500">District is required</p>
+                )}
               </div>
             </div>
 
@@ -176,7 +219,45 @@ const Cart = () => {
               <button onClick={handleSubmit}>Confirm Order</button>
             </div>
           </div>
-          <div className={cn("productList")}></div>
+          <div
+            className={cn("productList bg-white py-10 px-4 my-1 rounded-lg ")}
+          >
+            <div
+              className={cn("up flex justify-between items-center gap-2 pb-5 border-b border-black")}
+            >
+              <div
+                className={cn(
+                  "img w-[150px] min-w-[150px] md:w-48  aspect-[119/148]  object-cover border border-black"
+                )}
+              ></div>
+              <div className={cn("itemInfo flex flex-col justify-between gap-28")}>
+                <div
+                  className={cn("name&Price flex justify-between items-center gap-5")}
+                >
+                  <p className="font-semibold text-center w-24 mt-2">
+                    Thanaka face pack-140g lor
+                  </p>
+                  <p className="font-medium text-gray-600">800৳</p>
+                </div>
+                <div
+                  className={cn(
+                    "cart&Delete  flex justify-between items-center gap-5 mx-5"
+                  )}
+                >
+                  <p>cart</p>
+                  <div className="icon h-full">
+                    <RiDeleteBin6Line />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="down">
+            <Link className={cn(" flex items-center pt-4 gap-2")} to={'/'}>
+              <FaPlus />
+              <p>Add More Items</p>
+            </Link>
+            </div>
+          </div>
         </div>
       </Container>
     </div>

@@ -53,10 +53,10 @@ const Nav = () => {
     return (
         <nav className="main bg-[#F7EFED]  pb-1 fixed top-0 w-full z-50">
             <Container>
-                <div className="navMain py-2 px-2 flex justify-between items-center relative  border-b border-black p-10">
+                <div className="navMain py-2 px-2 flex justify-between items-center relative ">
                     {/* Logo Section */}
                     <div className="logo">
-                        <Pic className="w-16 h-16 rounded-lg" src={Logo} />
+                        <Pic className="w-10 h-10 rounded-full" src={Logo} />
                     </div>
 
                     {/* Navigation Items */}
