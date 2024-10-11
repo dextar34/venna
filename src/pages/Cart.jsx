@@ -254,7 +254,7 @@ const Cart = () => {
             <div className="down">
             <Link className={cn(" flex items-center pt-4 gap-2")} to={'/'}>
               <FaPlus />
-              <p>Add More Items</p>
+              <p className="md:hover:ml-2 transition-all duration-500">Add More Items</p>
             </Link>
             </div>
           </div>

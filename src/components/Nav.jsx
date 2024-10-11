@@ -55,8 +55,11 @@ const Nav = () => {
             <Container>
                 <div className="navMain py-2 px-2 flex justify-between items-center relative ">
                     {/* Logo Section */}
-                    <div className="logo">
+                    <div className="logo flex items-center gap-5">
                         <Pic className="w-10 h-10 rounded-full" src={Logo} />
+                        <Link to={'/'}>
+                            <p className='txt-lg md:text-2xl'>Vienna Apparel</p>
+                        </Link>
                     </div>
 
                     {/* Navigation Items */}
