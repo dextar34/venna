@@ -4,7 +4,7 @@ import cn from '../lib/cn'
 
 const AboutUS = () => {
   return (
-    <div className={cn('mt-24 mx-2')}>
+    <div className={cn('mt-24 mx-2 mb-12')}>
       <Container className={cn('text-xl text-justify font-medium text-gray-600 leading-9',
       'md:text-3xl md:leading-[55px]'
       )}>

@@ -15,7 +15,7 @@ const Contact = () => {
   
 
   return (
-    <div className={cn('mt-24')}>
+    <div className={cn('mt-24 ')}>
       <Container className={cn('flex flex-col items-center gap-10',
         'md:text-3xl'
       )}>

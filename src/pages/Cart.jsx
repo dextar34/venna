@@ -142,7 +142,7 @@ const Cart = () => {
               <div className="yourAddress">
                 <h1
                   className={cn(
-                    "text-xl font-semibold text-gray-500 p-2",
+                    "text-xl font-semibold text-gray-500 py-2",
                     "md:text-2xl md:pt-10"
                   )}
                 >
@@ -198,6 +198,19 @@ const Cart = () => {
                   <p className="text-red-500">District is required</p>
                 )}
               </div>
+            </div>
+            <div className="notes ">
+              <p className={cn(
+                    "text-xl font-semibold text-gray-500 py-2",
+                    "md:text-2xl md:pt-10"
+                  )}>Add note</p>
+            <textarea
+        placeholder="Add delivery instructrion"
+        rows="4" // number of rows for multi-line input
+        cols="35" // number of columns
+        className="focus:outline-none"
+
+      />
             </div>
 
             <div className="deliveryInfo w-80 border border-gray-900 p-2 my-5">
