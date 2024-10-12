@@ -26,7 +26,7 @@ const Home = () => {
       pic5: "https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_.jpg",
       alt: "",
       price: 224,
-      quantity: 99,
+      stock: 99,
       description:
         "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
     },
@@ -40,7 +40,7 @@ const Home = () => {
       pic5: "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg",
       alt: "",
       price: 499,
-      quantity: 0,
+      stock: 0,
       description:
         "1. 5 inches Full HD (1920 x 1080) widescreen IPS display And Radeon free Sync technology...",
     },
@@ -54,7 +54,7 @@ const Home = () => {
       pic5: "https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg",
       alt: "",
       price: 799,
-      quantity: 0,
+      stock: 0,
       description:
         "100% Polyester, Machine wash, 100% cationic polyester interlock...",
     },
@@ -232,22 +232,41 @@ const Home = () => {
                           +
                         </button>
                       </div>
+                      
+                      
                       <button
                         className={`border border-black text-center mt-2 md:mt-0 py-2 font-semibold bg-transparent w-auto md:w-72 ${
                           selectedSizes.length === 0 ? "opacity-50" : ""
-                        }`}
+                        } ` }
+                        disabled={activeData.stock <= 0}
                         
                         onClick={handleAddToCart}
                       >
                         Add to Cart
                       </button>
-                    </div>
+                      </div>
+                      
+                      {activeData.stock > 0 ? (
+                          
+                          <>
+                    
                     <button
                       className="rounded-lg w-full text-center py-4 font-semibold bg-black text-white text-base md:text-2xl"
                       onClick={handleAddToCart}
+                      
                     >
                       Buy now
                     </button>
+                      </>
+                    ) : (
+                    <button
+                      className="rounded-lg w-full text-center py-4 font-semibold bg-red-500  text-white text-base md:text-2xl"
+                      onClick={handleAddToCart}
+                      disabled={activeData.stock <= 0}
+                    >
+                      Out of stock
+                    </button>
+                    )}
                   </div>
                 </div>
               </div>
