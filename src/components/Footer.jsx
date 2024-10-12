@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 const Footer = () => {
   return (
     <footer className={cn('text-white mt-5 ')}>
-        <Container className={cn('bg-black p-2')}>
+        <Container className={cn('bg-gray-500 p-2')}>
             <div className="folow us on py-2 text-lg flex flex-col items-center">
                 <h1>Follow us on</h1>
                 <div className="icon flex py-2 gap-5">
