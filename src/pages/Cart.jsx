@@ -5,7 +5,9 @@ import cn from "../lib/cn";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
-
+import { useDispatch, useSelector } from "react-redux";
+import { decreaseQuantity, increaseQuantity, removeFromCart } from "../app/cartSlice";
+import { data } from "autoprefixer";
 
 const Cart = () => {
   const [phone, setPhone] = useState("");
@@ -77,6 +79,16 @@ const Cart = () => {
       setDistricts([]); // Clear districts when no division is selected
     }
   }, [selectedDivision]);
+
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const dispatch = useDispatch();
+  const totalPrice = cartItems.reduce(
+    (acc, data) => acc + data.price * data.quantity,
+    0
+  );
+
+
+  const [quantity, setQuantity] = useState(1);
 
   return (
     <div className="mt-28 mx-4">
@@ -151,8 +163,11 @@ const Cart = () => {
                 <input
                   className={cn("focus:outline-none w-full py-3 my-2")}
                   type="text"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
                   placeholder="House no, street, direction*"
                 />
+
                 {errorMessage && !address && (
                   <p className="text-red-500">Address is required</p>
                 )}
@@ -200,23 +215,26 @@ const Cart = () => {
               </div>
             </div>
             <div className="notes ">
-              <p className={cn(
-                    "text-xl font-semibold text-gray-500 py-2",
-                    "md:text-2xl md:pt-10"
-                  )}>Add note</p>
-            <textarea
-        placeholder="Add delivery instructrion"
-        rows="4" // number of rows for multi-line input
-        cols="35" // number of columns
-        className="focus:outline-none"
-
-      />
+              <p
+                className={cn(
+                  "text-xl font-semibold text-gray-500 py-2",
+                  "md:text-2xl md:pt-10"
+                )}
+              >
+                Add note
+              </p>
+              <textarea
+                placeholder="Add delivery instructrion"
+                rows="4" // number of rows for multi-line input
+                cols="35" // number of columns
+                className="focus:outline-none"
+              />
             </div>
 
             <div className="deliveryInfo w-80 border border-gray-900 p-2 my-5">
               <div className="flex justify-between py-1">
                 <h4>Sub Total</h4>
-                <h3>{subTotal}৳</h3>
+                <h3>${(data.price*cartItems.length)}</h3>
               </div>
               <div className="flex justify-between py-1 border-dashed border-b-2 border-black">
                 <h4>Delivery charge </h4>
@@ -235,40 +253,75 @@ const Cart = () => {
           <div
             className={cn("productList bg-white py-10 px-4 my-1 rounded-lg ")}
           >
-            <div
-              className={cn("up flex justify-between items-center gap-2 pb-5 border-b border-black")}
-            >
-              <div
-                className={cn(
-                  "img w-[150px] min-w-[150px] md:w-48  aspect-[119/148]  object-cover border border-black"
-                )}
-              ></div>
-              <div className={cn("itemInfo flex flex-col justify-between gap-28")}>
-                <div
-                  className={cn("name&Price flex justify-between items-center gap-5")}
-                >
-                  <p className="font-semibold text-center w-24 mt-2">
-                    Thanaka face pack-140g lor
-                  </p>
-                  <p className="font-medium text-gray-600">800৳</p>
-                </div>
-                <div
-                  className={cn(
-                    "cart&Delete  flex justify-between items-center gap-5 mx-5"
-                  )}
-                >
-                  <p>cart</p>
-                  <div className="icon h-full">
-                    <RiDeleteBin6Line />
+            {cartItems.length === 0 ? (
+              <p className="ml-2 w-48 text-gray-600 font-bold">Your cart is empty </p>
+            ) : (
+              <>
+                {cartItems.map((data, index) => (
+                  <div
+                    key={index}
+                    className={cn("up mt-5 pb-5 border-b border-black")}
+                  >
+                    <div className="flex">
+                      <div
+                        className={cn(
+                          "img w-[150px] min-w-[150px] md:w-48  aspect-[119/148]  object-cover"
+                        )}
+                      >
+                        <img
+                          src={data.pic1}
+                          alt={data.alt}
+                          className="object-contain w-full h-full"
+                        />
+                      </div>
+                      <div className={cn("name&Price ml-2")}>
+                        <p className="font-semibold text-center md:text-center w-24 ">
+                          {data.name}
+                        </p>
+                        <p className="font-semibold text-center mt-2 text-gray-600">
+                          {data.price} ৳
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      className={cn(
+                        "itemInfo flex flex-col justify-between mt-5"
+                      )}
+                    >
+                      <div
+                        className={cn(
+                          "cart&Delete  flex justify-between items-center gap-5 mx-5"
+                        )}
+                      >
+                        {/* <button
+                          onClick={() => dispatch(decreaseQuantity(data))}
+                        >
+                          -
+                        </button>
+                        <button
+                          onClick={() => dispatch(increaseQuantity(data))}
+                        >
+                          +
+                        </button> */} cart
+
+                        <div className="icon h-full">
+                          <RiDeleteBin6Line className="text-lg hover:text-red-700 transition-all duration-100" 
+                            onClick={() => dispatch(removeFromCart(data))}
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </div>
+                ))}
+              </>
+            )}
             <div className="down">
-            <Link className={cn(" flex items-center pt-4 gap-2")} to={'/'}>
-              <FaPlus />
-              <p className="md:hover:ml-2 transition-all duration-500">Add More Items</p>
-            </Link>
+              <Link className={cn(" flex items-center pt-4 gap-2")} to={"/"}>
+                <FaPlus />
+                <p className="md:hover:ml-2 transition-all duration-500">
+                  Add More Items
+                </p>
+              </Link>
             </div>
           </div>
         </div>

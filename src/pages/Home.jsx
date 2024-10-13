@@ -4,8 +4,31 @@ import cn from "../lib/cn";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, decreaseQuantity, increaseQuantity } from "../app/cartSlice";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const handleAddToCart = () => {
+    if (selectedSizes.length === 0) {
+      setShowError(true); // Show error if no size is selected
+    } else {
+      setShowError(false);
+      // Create an object for cart that includes product details, size, and quantity
+      const cartItem = {
+        ...activeData, // Spread activeData to include all product details
+        size: selectedSizes[0], // You might want to allow selecting only one size, modify if needed
+        quantity,
+      };
+      dispatch(addToCart(cartItem)); // Dispatch the action with the cartItem
+      console.log("Added to cart:", cartItem);
+    }
+  };
+
+  const navigate = useNavigate(); // Initialize navigate
+  const totalItems = useSelector((state) => state.cart.totalItems); // Get the totalItems from the cart state
+
   // Initialize an empty array for selected data
   const [selectedData, setSelectedData] = useState([]);
 
@@ -40,7 +63,7 @@ const Home = () => {
       pic5: "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg",
       alt: "",
       price: 499,
-      stock: 0,
+      stock: 100,
       description:
         "1. 5 inches Full HD (1920 x 1080) widescreen IPS display And Radeon free Sync technology...",
     },
@@ -75,23 +98,30 @@ const Home = () => {
   const handleSizeClick = (size) => {
     setSelectedSizes((prevSelectedSizes) => {
       if (prevSelectedSizes.includes(size)) {
-        return prevSelectedSizes.filter((s) => s !== size); // Deselect if already selected
+        return []; // Deselect if already selected
       } else {
-        return [...prevSelectedSizes, size]; // Select the size
+        return [size]; // Select the size
       }
     });
     setShowError(false); // Hide error if a size is selected
   };
 
-  const handleAddToCart = () => {
-    if (selectedSizes.length === 0) {
-      setShowError(true); // Show error if no size is selected
-    } else {
-      setShowError(false); // Proceed with add to cart logic
-      // Add your "Add to Cart" logic here
-      console.log("Added to cart:", selectedSizes);
-    }
-  };
+  const cartItems = useSelector((state) => state.cart.cartItems);
+const numberOfOrder = cartItems.length;
+
+const handleAddToCart1 = () => {
+  if (selectedSizes.length === 0 && numberOfOrder === 0) {
+    // If no size is selected and there are no items in the cart, show the error
+    setShowError(true);
+  } else {
+    // If size is selected or there are already items in the cart, proceed to cart
+    setShowError(false); // Clear any previous error
+    console.log("Navigating to /cart"); // Debugging line
+    navigate("/cart"); // Redirect to cart page
+  }
+};
+
+  
 
   const increaseQuantity = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
@@ -224,7 +254,7 @@ const Home = () => {
                   <div className="addtocart pt-5 md:mr-6">
                     <div className="up  flex flex-col md:flex-row justify-between gap-x-2 pb-2">
                       <div className="quantity-control flex justify-evenly items-center gap-x-4 border border-black text-center py-2 font-semibold bg-transparent md:w-72">
-                        <button className="text-2xl" onClick={decreaseQuantity}>
+                      <button className="text-2xl" onClick={decreaseQuantity}>
                           -
                         </button>
                         <span>{quantity}</span>
@@ -232,40 +262,35 @@ const Home = () => {
                           +
                         </button>
                       </div>
-                      
-                      
+
                       <button
                         className={`border border-black text-center mt-2 md:mt-0 py-2 font-semibold bg-transparent w-auto md:w-72 ${
                           selectedSizes.length === 0 ? "opacity-50" : ""
-                        } ` }
+                        } `}
                         disabled={activeData.stock <= 0}
-                        
-                        onClick={handleAddToCart}
+                        onClick={() => handleAddToCart(data)}
                       >
                         Add to Cart
                       </button>
-                      </div>
-                      
-                      {activeData.stock > 0 ? (
-                          
-                          <>
-                    
-                    <button
-                      className="rounded-lg w-full text-center py-4 font-semibold bg-black text-white text-base md:text-2xl"
-                      onClick={handleAddToCart}
-                      
-                    >
-                      Buy now
-                    </button>
+                    </div>
+
+                    {activeData.stock > 0 ? (
+                      <>
+                        <button
+                          className="rounded-lg w-full text-center py-4 font-semibold bg-black text-white text-base md:text-2xl"
+                          onClick={handleAddToCart1}
+                        >
+                          Buy now
+                        </button>
                       </>
                     ) : (
-                    <button
-                      className="rounded-lg w-full text-center py-4 font-semibold bg-red-500  text-white text-base md:text-2xl"
-                      onClick={handleAddToCart}
-                      disabled={activeData.stock <= 0}
-                    >
-                      Out of stock
-                    </button>
+                      <button
+                        className="rounded-lg w-full text-center py-4 font-semibold bg-red-500  text-white text-base md:text-2xl"
+                        onClick={handleAddToCart1}
+                        disabled={activeData.stock <= 0}
+                      >
+                        Out of stock
+                      </button>
                     )}
                   </div>
                 </div>
