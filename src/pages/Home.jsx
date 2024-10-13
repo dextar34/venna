@@ -109,15 +109,27 @@ const Home = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
 const numberOfOrder = cartItems.length;
 
+// Function to handle "Buy Now" button
 const handleAddToCart1 = () => {
   if (selectedSizes.length === 0 && numberOfOrder === 0) {
-    // If no size is selected and there are no items in the cart, show the error
+    // If no size is selected and no items in the cart, show the error
     setShowError(true);
   } else {
-    // If size is selected or there are already items in the cart, proceed to cart
+    // If a size is selected, proceed to add it to the cart
     setShowError(false); // Clear any previous error
+
+     // Create an object for cart that includes product details, size, and quantity
+     const cartItem = {
+      ...activeData, // Spread activeData to include all product details
+      size: selectedSizes[0], // You might want to allow selecting only one size, modify if needed
+      quantity,
+    };
+    dispatch(addToCart(cartItem)); // Dispatch the action with the cartItem
+    console.log("Buy now:", cartItem);
+
+    // Navigate to the cart page after adding the item
     console.log("Navigating to /cart"); // Debugging line
-    navigate("/cart"); // Redirect to cart page
+    navigate("/cart"); // Redirect to the cart page
   }
 };
 

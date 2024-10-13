@@ -87,8 +87,16 @@ const Cart = () => {
     0
   );
 
-
   const [quantity, setQuantity] = useState(1);
+
+  const increaseQuantity = () => {
+    setQuantity((prevQuantity) => prevQuantity + 1);
+  };
+
+  const decreaseQuantity = () => {
+    setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
+  };
+
 
   return (
     <div className="mt-28 mx-4">
@@ -234,7 +242,7 @@ const Cart = () => {
             <div className="deliveryInfo w-80 border border-gray-900 p-2 my-5">
               <div className="flex justify-between py-1">
                 <h4>Sub Total</h4>
-                <h3>${(data.price*cartItems.length)}</h3>
+                <h3>${(data.price*quantity)}</h3>
               </div>
               <div className="flex justify-between py-1 border-dashed border-b-2 border-black">
                 <h4>Delivery charge </h4>
@@ -293,16 +301,13 @@ const Cart = () => {
                           "cart&Delete  flex justify-between items-center gap-5 mx-5"
                         )}
                       >
-                        {/* <button
-                          onClick={() => dispatch(decreaseQuantity(data))}
-                        >
+                        <button className="text-2xl" onClick={decreaseQuantity}>
                           -
                         </button>
-                        <button
-                          onClick={() => dispatch(increaseQuantity(data))}
-                        >
+                        <span>{quantity}</span>
+                        <button className="text-2xl" onClick={increaseQuantity}>
                           +
-                        </button> */} cart
+                        </button>
 
                         <div className="icon h-full">
                           <RiDeleteBin6Line className="text-lg hover:text-red-700 transition-all duration-100" 
