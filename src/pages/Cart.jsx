@@ -289,6 +289,7 @@ const Cart = () => {
                         <p className="font-semibold text-center mt-2 text-gray-600">
                           {data.price} ৳
                         </p>
+                        <p className="font-medium text-center mt-2 text-gray-600">Size: {data.size}</p>
                       </div>
                     </div>
                     <div

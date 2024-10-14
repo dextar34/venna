@@ -38,6 +38,7 @@ const Home = () => {
 
   const sizes = ["S", "M", "L", "XL", "XXL"];
 
+
   const data = [
     {
       name: "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
